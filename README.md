@@ -1,2 +1,1 @@
-# emb
-LLGo Embed Libraries
+# LLGo Embed Libraries
