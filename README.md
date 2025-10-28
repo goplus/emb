@@ -1,3 +1,4 @@
-# LLGo Embed Libraries
+LLGo Embedded Libraries
+=====
 
-**Note**: The device and machine packages come from [TinyGo](https://tinygo.org/). The machine package will be added in the future.
+The device and machine packages come from [TinyGo](https://tinygo.org/).
