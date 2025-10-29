@@ -15,6 +15,7 @@ Both branches mirror TinyGo's official `src/machine` and `src/device` modules re
 
 - **Update Source**: TinyGo release packages (e.g., [tinygo0.39.0.linux-amd64.tar.gz](https://github.com/tinygo-org/tinygo/releases))
   - **Note**: TinyGo does not directly store these modules in their repository. Copy them from official release packages.
+  - **Platform Note**: The `src/device` and `src/machine` directories are identical across all platform release packages, so you only need to download one platform's package.
 - **Rules**: Sync only, no custom modifications
 - **Commit Tag**: `[SYNC] Update machine to TinyGo <version>` or `[SYNC] Update device to TinyGo <version>`
 
