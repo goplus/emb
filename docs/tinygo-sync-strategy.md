@@ -9,19 +9,14 @@ Establish a clear branch structure to enable us to:
 
 ## Branch Structure
 
-### `machine` Branch
-- **Responsibility**: Pure mirror of TinyGo's official `src/machine` module
-- **Update Source**: TinyGo release packages (e.g., [tinygo0.39.0.linux-amd64.tar.gz](https://github.com/tinygo-org/tinygo/releases))
-  - **Note**: TinyGo does not directly store `src/machine` in their repository. Copy this module from official release packages.
-- **Rules**: Sync only, no custom modifications
-- **Commit Tag**: `[SYNC] Update machine to TinyGo <version>`
+### `machine` and `device` Branches
 
-### `device` Branch
-- **Responsibility**: Pure mirror of TinyGo's official `src/device` module
+Both branches mirror TinyGo's official `src/machine` and `src/device` modules respectively.
+
 - **Update Source**: TinyGo release packages (e.g., [tinygo0.39.0.linux-amd64.tar.gz](https://github.com/tinygo-org/tinygo/releases))
-  - **Note**: TinyGo does not directly store `src/device` in their repository. Copy this module from official release packages.
+  - **Note**: TinyGo does not directly store these modules in their repository. Copy them from official release packages.
 - **Rules**: Sync only, no custom modifications
-- **Commit Tag**: `[SYNC] Update device to TinyGo <version>`
+- **Commit Tag**: `[SYNC] Update machine to TinyGo <version>` or `[SYNC] Update device to TinyGo <version>`
 
 ### `main` Branch
 - **Responsibility**: Production code version (protected)
