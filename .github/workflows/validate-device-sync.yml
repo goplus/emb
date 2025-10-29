@@ -1,0 +1,68 @@
+name: Validate Device Sync
+
+on:
+  push:
+    branches:
+      - device
+  pull_request:
+    branches:
+      - device
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract TinyGo version from latest commit
+        id: extract_version
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "Commit message: $COMMIT_MSG"
+          
+          if echo "$COMMIT_MSG" | grep -qE '^\[SYNC\] Update device to TinyGo v[0-9]+\.[0-9]+\.[0-9]+'; then
+            VERSION=$(echo "$COMMIT_MSG" | grep -oP 'TinyGo \Kv[0-9]+\.[0-9]+\.[0-9]+')
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "Valid commit message format detected: $COMMIT_MSG"
+            echo "Extracted version: $VERSION"
+          else
+            echo "Error: Invalid commit message format"
+            echo "Expected format: [SYNC] Update device to TinyGo v<version>"
+            echo "Actual message: $COMMIT_MSG"
+            exit 1
+          fi
+
+      - name: Sync device from TinyGo release
+        run: |
+          VERSION="${{ steps.extract_version.outputs.version }}"
+          echo "Syncing device directory from TinyGo $VERSION..."
+          
+          chmod +x scripts/sync-from-release.sh
+          ./scripts/sync-from-release.sh "$VERSION" src/device device-temp
+
+      - name: Compare synced content with repository
+        run: |
+          echo "Comparing synced content with repository device directory..."
+          
+          if ! diff -r device-temp device; then
+            echo "Error: Device directory content does not match TinyGo official release"
+            echo "Differences found:"
+            diff -r device-temp device || true
+            exit 1
+          fi
+          
+          echo "✅ Device directory content matches TinyGo official release"
+
+      - name: Validation summary
+        if: success()
+        run: |
+          VERSION="${{ steps.extract_version.outputs.version }}"
+          echo "========================================="
+          echo "✅ All validations passed!"
+          echo "========================================="
+          echo "✓ Commit message format is valid"
+          echo "✓ Device content matches TinyGo $VERSION"
+          echo "========================================="
