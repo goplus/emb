@@ -1,0 +1,54 @@
+name: Validate Device Sync
+
+on:
+  push:
+    branches:
+      - device
+  pull_request:
+    branches:
+      - device
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest TinyGo version
+        id: tinygo-version
+        run: |
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/tinygo-org/tinygo/releases/latest | jq -r .tag_name)
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          echo "Latest TinyGo version: $LATEST_VERSION"
+
+      - name: Sync device content from TinyGo release
+        run: |
+          chmod +x .github/scripts/sync-from-release.sh
+          ./.github/scripts/sync-from-release.sh ${{ steps.tinygo-version.outputs.version }} src/device device-temp
+
+      - name: Compare synced content with repository
+        run: |
+          echo "Comparing device-temp/ with device/..."
+          
+          if ! diff -r device/ device-temp/; then
+            echo ""
+            echo "Error: device/ directory does not match TinyGo ${{ steps.tinygo-version.outputs.version }} official content"
+            echo "Please run: ./.github/scripts/sync-from-release.sh ${{ steps.tinygo-version.outputs.version }} src/device device"
+            exit 1
+          fi
+          
+          echo "✓ Device content matches TinyGo ${{ steps.tinygo-version.outputs.version }} release"
+
+      - name: Validation Summary
+        if: success()
+        run: |
+          echo "================================"
+          echo "✓ All validations passed!"
+          echo "================================"
+          echo "- Device content sync: verified"
+          echo "- TinyGo version: ${{ steps.tinygo-version.outputs.version }}"
+          echo "================================"
