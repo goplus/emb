@@ -65,3 +65,12 @@ This script is designed to be:
 - **Reusable**: Used by both manual sync and CI validation
 - **Reliable**: Includes retry logic and comprehensive error handling
 - **Clean**: Automatically removes temporary files
+
+### CI Integration
+
+The CI workflow (`.github/workflows/validate-device-sync.yml`) defines the TinyGo version in its environment variables (`TINYGO_VERSION`). The workflow uses this script to validate that the device directory content matches the specified TinyGo release.
+
+To update to a new TinyGo version:
+1. Update `TINYGO_VERSION` in `.github/workflows/validate-device-sync.yml`
+2. Run the sync script with the new version
+3. Commit the changes

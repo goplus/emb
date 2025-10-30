@@ -6,18 +6,24 @@ This directory contains device support packages synced from TinyGo.
 
 ## Sync Instructions
 
-To populate this directory with TinyGo v0.39.0 device content, run:
+The TinyGo version is defined in `.github/workflows/validate-device-sync.yml` as `TINYGO_VERSION`.
+
+To sync this directory with the configured TinyGo version, run:
 
 ```bash
 ./scripts/sync-from-release.sh v0.39.0 src/device device
 ```
 
-After syncing, commit the changes with:
+After syncing, commit the changes:
 
 ```bash
 git add device/
-git commit -m "[SYNC] Update device to TinyGo v0.39.0"
+git commit -m "Sync device directory from TinyGo v0.39.0"
 ```
+
+## CI Validation
+
+The CI workflow automatically validates that the device directory content matches the TinyGo version specified in the workflow configuration file.
 
 ## Source
 
