@@ -1,0 +1,54 @@
+name: Validate Device Sync
+
+on:
+  push:
+    branches:
+      - device
+  pull_request:
+    branches:
+      - device
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Extract TinyGo version from commit message
+        id: version
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "Commit message: $COMMIT_MSG"
+          
+          if [[ $COMMIT_MSG =~ \[SYNC\]\ Update\ device\ to\ TinyGo\ (v[0-9]+\.[0-9]+\.[0-9]+) ]]; then
+            VERSION="${BASH_REMATCH[1]}"
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "Found version: $VERSION"
+          else
+            echo "Error: Commit message does not match format '[SYNC] Update device to TinyGo <version>'"
+            exit 1
+          fi
+      
+      - name: Sync device from TinyGo release
+        run: |
+          ./scripts/sync-from-release.sh -v "${{ steps.version.outputs.version }}" -s src/device -t device-temp/
+      
+      - name: Compare device content
+        run: |
+          if ! diff -r device/ device-temp/; then
+            echo "Error: device/ directory does not match TinyGo ${{ steps.version.outputs.version }} release"
+            exit 1
+          fi
+          echo "Success: device/ directory matches TinyGo ${{ steps.version.outputs.version }} release"
+      
+      - name: Verify commit message format
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          if [[ $COMMIT_MSG =~ ^\[SYNC\]\ Update\ device\ to\ TinyGo\ v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            echo "Success: Commit message format is correct"
+          else
+            echo "Error: Commit message must start with '[SYNC] Update device to TinyGo v<version>'"
+            exit 1
+          fi
