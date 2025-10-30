@@ -37,23 +37,16 @@ Create an automated workflow to monitor TinyGo official releases. When a new ver
 - Read current versions from `device` and `machine` branches
 - Determine if update is needed
 
-### Job 2: Sync device (if new version available)
+### Job 2 & 3: Sync device and machine (if new version available)
+
+For each target (`device` and `machine`):
 
 - Download new TinyGo version (linux-amd64)
-- Extract `src/device` directory contents
-- Create new branch `sync-device-vX.Y.Z`
-- Sync files to `device/` directory
-- Commit with message: `[SYNC] Sync device from TinyGo vX.Y.Z`
-- Create PR to `device` branch
-
-### Job 3: Sync machine (if new version available)
-
-- Download new TinyGo version (linux-amd64)
-- Extract `src/machine` directory contents
-- Create new branch `sync-machine-vX.Y.Z`
-- Sync files to `machine/` directory
-- Commit with message: `[SYNC] Sync machine from TinyGo vX.Y.Z`
-- Create PR to `machine` branch
+- Extract `src/{target}` directory contents
+- Create new branch `sync-{target}-vX.Y.Z`
+- Sync files to `{target}/` directory
+- Commit with message: `[SYNC] Sync {target} from TinyGo vX.Y.Z`
+- Create PR to `{target}` branch
 
 ## PR Specifications
 
