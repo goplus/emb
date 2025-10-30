@@ -1,5 +1,30 @@
 #!/bin/bash
 
+# Sync script for downloading and extracting content from TinyGo releases
+#
+# Usage:
+#   ./sync-from-release.sh <tinygo-version> <source-path> <target-folder>
+#
+# Parameters:
+#   <tinygo-version>  - TinyGo version (e.g., v0.39.0)
+#   <source-path>     - Source path within TinyGo package (e.g., src/device)
+#   <target-folder>   - Target directory for extracted content (e.g., device)
+#
+# Examples:
+#   ./sync-from-release.sh v0.39.0 src/device device
+#   ./sync-from-release.sh v0.39.0 src/machine machine
+#
+# How it works:
+#   1. Downloads the specified TinyGo release from GitHub (linux-amd64 version)
+#   2. Extracts the requested source path from the tarball
+#   3. Copies the content to the target folder
+#   4. Cleans up temporary files
+#
+# Notes:
+#   - Uses linux-amd64 version (content is identical across platforms)
+#   - Requires wget and tar utilities
+#   - Includes retry logic (3 attempts with 30s timeout)
+
 set -e
 
 if [ "$#" -ne 3 ]; then

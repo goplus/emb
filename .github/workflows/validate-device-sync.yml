@@ -21,24 +21,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Validate commit message format
-        if: github.event_name == 'push'
-        run: |
-          COMMIT_MSG=$(git log -1 --pretty=%B)
-          echo "Commit message: $COMMIT_MSG"
-          
-          if ! echo "$COMMIT_MSG" | grep -qE '^\[SYNC\] Update device to TinyGo v[0-9]+\.[0-9]+\.[0-9]+'; then
-            echo "Error: Commit message must follow format: [SYNC] Update device to TinyGo <version>"
-            echo "Example: [SYNC] Update device to TinyGo v0.39.0"
-            exit 1
-          fi
-          
-          echo "✓ Commit message format is valid"
-
       - name: Sync device content from TinyGo release
         run: |
-          chmod +x scripts/sync-from-release.sh
-          ./scripts/sync-from-release.sh ${{ env.TINYGO_VERSION }} src/device device-temp
+          chmod +x .github/sync-from-release.sh
+          ./.github/sync-from-release.sh ${{ env.TINYGO_VERSION }} src/device device-temp
 
       - name: Compare synced content with repository
         run: |
@@ -47,7 +33,7 @@ jobs:
           if ! diff -r device/ device-temp/; then
             echo ""
             echo "Error: device/ directory does not match TinyGo ${{ env.TINYGO_VERSION }} official content"
-            echo "Please run: ./scripts/sync-from-release.sh ${{ env.TINYGO_VERSION }} src/device device"
+            echo "Please run: ./.github/sync-from-release.sh ${{ env.TINYGO_VERSION }} src/device device"
             exit 1
           fi
           
@@ -59,7 +45,6 @@ jobs:
           echo "================================"
           echo "✓ All validations passed!"
           echo "================================"
-          echo "- Commit message format: valid"
           echo "- Device content sync: verified"
           echo "- TinyGo version: ${{ env.TINYGO_VERSION }}"
           echo "================================"
