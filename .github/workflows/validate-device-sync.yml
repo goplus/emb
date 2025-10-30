@@ -8,9 +8,6 @@ on:
     branches:
       - device
 
-env:
-  TINYGO_VERSION: v0.39.0
-
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -21,24 +18,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Validate commit message format
-        if: github.event_name == 'push'
+      - name: Get latest TinyGo version
+        id: tinygo-version
         run: |
-          COMMIT_MSG=$(git log -1 --pretty=%B)
-          echo "Commit message: $COMMIT_MSG"
-          
-          if ! echo "$COMMIT_MSG" | grep -qE '^\[SYNC\] Update device to TinyGo v[0-9]+\.[0-9]+\.[0-9]+'; then
-            echo "Error: Commit message must follow format: [SYNC] Update device to TinyGo <version>"
-            echo "Example: [SYNC] Update device to TinyGo v0.39.0"
-            exit 1
-          fi
-          
-          echo "✓ Commit message format is valid"
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/tinygo-org/tinygo/releases/latest | jq -r .tag_name)
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          echo "Latest TinyGo version: $LATEST_VERSION"
 
       - name: Sync device content from TinyGo release
         run: |
           chmod +x .github/scripts/sync-from-release.sh
-          ./.github/scripts/sync-from-release.sh ${{ env.TINYGO_VERSION }} src/device device-temp
+          ./.github/scripts/sync-from-release.sh ${{ steps.tinygo-version.outputs.version }} src/device device-temp
 
       - name: Compare synced content with repository
         run: |
@@ -46,12 +36,12 @@ jobs:
           
           if ! diff -r device/ device-temp/; then
             echo ""
-            echo "Error: device/ directory does not match TinyGo ${{ env.TINYGO_VERSION }} official content"
-            echo "Please run: ./.github/scripts/sync-from-release.sh ${{ env.TINYGO_VERSION }} src/device device"
+            echo "Error: device/ directory does not match TinyGo ${{ steps.tinygo-version.outputs.version }} official content"
+            echo "Please run: ./.github/scripts/sync-from-release.sh ${{ steps.tinygo-version.outputs.version }} src/device device"
             exit 1
           fi
           
-          echo "✓ Device content matches TinyGo ${{ env.TINYGO_VERSION }} release"
+          echo "✓ Device content matches TinyGo ${{ steps.tinygo-version.outputs.version }} release"
 
       - name: Validation Summary
         if: success()
@@ -59,7 +49,6 @@ jobs:
           echo "================================"
           echo "✓ All validations passed!"
           echo "================================"
-          echo "- Commit message format: valid"
           echo "- Device content sync: verified"
-          echo "- TinyGo version: ${{ env.TINYGO_VERSION }}"
+          echo "- TinyGo version: ${{ steps.tinygo-version.outputs.version }}"
           echo "================================"
