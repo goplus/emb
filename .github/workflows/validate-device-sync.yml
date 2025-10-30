@@ -37,8 +37,8 @@ jobs:
 
       - name: Sync device content from TinyGo release
         run: |
-          chmod +x scripts/sync-from-release.sh
-          ./scripts/sync-from-release.sh ${{ env.TINYGO_VERSION }} src/device device-temp
+          chmod +x .github/scripts/sync-from-release.sh
+          ./.github/scripts/sync-from-release.sh ${{ env.TINYGO_VERSION }} src/device device-temp
 
       - name: Compare synced content with repository
         run: |
@@ -47,7 +47,7 @@ jobs:
           if ! diff -r device/ device-temp/; then
             echo ""
             echo "Error: device/ directory does not match TinyGo ${{ env.TINYGO_VERSION }} official content"
-            echo "Please run: ./scripts/sync-from-release.sh ${{ env.TINYGO_VERSION }} src/device device"
+            echo "Please run: ./.github/scripts/sync-from-release.sh ${{ env.TINYGO_VERSION }} src/device device"
             exit 1
           fi
           
