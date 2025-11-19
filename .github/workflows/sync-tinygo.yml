@@ -30,6 +30,12 @@ jobs:
           git fetch origin device:device
           git fetch origin machine:machine
 
+      - name: Prepare sync script
+        run: |
+          # Copy script to temp location before switching branches
+          cp .github/workflows/scripts/sync-module.sh /tmp/sync-module.sh
+          chmod +x /tmp/sync-module.sh
+
       - name: Get latest TinyGo version
         id: get-latest
         env:
@@ -104,20 +110,13 @@ jobs:
           VERSION="${{ steps.get-latest.outputs.latest_version }}"
           TEMP_DIR="tinygo_temp"
 
-          # Switch back to the branch where workflow was triggered (has the script)
-          git checkout ${{ github.ref_name }}
-
-          # Call sync script (handles download, extract, and sync)
-          chmod +x .github/workflows/scripts/sync-module.sh
-          .github/workflows/scripts/sync-module.sh \
+          # Call sync script from temp location (already on module branch)
+          /tmp/sync-module.sh \
             "${{ matrix.module }}" \
             "$VERSION" \
             "$TEMP_DIR" \
             "src/${{ matrix.module }}" \
             "${{ matrix.module }}/"
-
-          # Switch back to module branch for committing
-          git checkout ${{ matrix.module }}
 
       - name: Verify sync
         if: steps.compare.outputs.needs_sync == 'true'
