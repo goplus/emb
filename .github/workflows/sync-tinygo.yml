@@ -116,18 +116,24 @@ jobs:
         if: steps.compare.outputs.needs_sync == 'true'
         run: |
           VERSION="${{ steps.get-latest.outputs.latest_version }}"
+          TEMP_DIR="tinygo_temp"
 
           # Call sync script (handles download, extract, and sync)
           chmod +x .github/workflows/scripts/sync-module.sh
           .github/workflows/scripts/sync-module.sh \
             "${{ matrix.module }}" \
-            "$VERSION"
+            "$VERSION" \
+            "$TEMP_DIR" \
+            "src/${{ matrix.module }}" \
+            "${{ matrix.module }}/"
 
       - name: Verify sync
         if: steps.compare.outputs.needs_sync == 'true'
         run: |
+          TEMP_DIR="tinygo_temp"
+
           # Compare TinyGo source with committed directory
-          if ! diff -r "tinygo_temp/tinygo/src/${{ matrix.module }}" "${{ matrix.module }}/"; then
+          if ! diff -r "$TEMP_DIR/tinygo/src/${{ matrix.module }}" "${{ matrix.module }}/"; then
             echo "Verification failed: directories differ"
             exit 1
           fi
