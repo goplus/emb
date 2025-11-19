@@ -116,25 +116,12 @@ jobs:
         if: steps.compare.outputs.needs_sync == 'true'
         run: |
           VERSION="${{ steps.get-latest.outputs.latest_version }}"
-          VERSION_NUM=${VERSION#v}
 
-          # Download TinyGo release
-          URL="https://github.com/tinygo-org/tinygo/releases/download/${VERSION}/tinygo${VERSION_NUM}.linux-amd64.tar.gz"
-          echo "Downloading from: $URL"
-
-          curl -L -o tinygo.tar.gz "$URL"
-
-          # Extract to temporary directory
-          mkdir -p tinygo_temp
-          tar -xzf tinygo.tar.gz -C tinygo_temp
-
-          # Call sync script
+          # Call sync script (handles download, extract, and sync)
           chmod +x .github/workflows/scripts/sync-module.sh
           .github/workflows/scripts/sync-module.sh \
             "${{ matrix.module }}" \
-            "$VERSION" \
-            "tinygo_temp/tinygo/src/${{ matrix.module }}" \
-            "${{ matrix.module }}/"
+            "$VERSION"
 
       - name: Verify sync
         if: steps.compare.outputs.needs_sync == 'true'
