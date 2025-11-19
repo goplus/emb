@@ -53,8 +53,8 @@ jobs:
           # Switch to module branch
           git checkout ${{ matrix.module }}
 
-          # Find latest [SYNC] commit
-          SYNC_COMMIT=$(git log --all --grep="^\[SYNC\] Sync ${{ matrix.module }} from TinyGo" --format="%H" -n 1)
+          # Find latest [SYNC] commit on current branch only
+          SYNC_COMMIT=$(git log --grep="^\[SYNC\] Sync ${{ matrix.module }} from TinyGo" --format="%H" -n 1)
 
           if [ -z "$SYNC_COMMIT" ]; then
             echo "No [SYNC] commit found, treating as initial state"
