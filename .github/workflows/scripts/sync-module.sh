@@ -41,7 +41,7 @@ mkdir -p "$TEMP_DIR"
 tar -xzf tinygo.tar.gz -C "$TEMP_DIR"
 
 # Full path to source in extracted archive
-FULL_SOURCE_PATH="${TEMP_DIR}/tinygo/${SOURCE_DIR}"
+FULL_SOURCE_PATH="${TEMP_DIR}/${SOURCE_DIR}"
 
 # Verify source directory exists
 if [ ! -d "$FULL_SOURCE_PATH" ]; then

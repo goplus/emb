@@ -133,7 +133,7 @@ jobs:
           TEMP_DIR="tinygo_temp"
 
           # Compare TinyGo source with committed directory
-          if ! diff -r "$TEMP_DIR/tinygo/src/${{ matrix.module }}" "${{ matrix.module }}/"; then
+          if ! diff -r "$TEMP_DIR/src/${{ matrix.module }}" "${{ matrix.module }}/"; then
             echo "Verification failed: directories differ"
             exit 1
           fi
