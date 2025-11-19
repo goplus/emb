@@ -129,8 +129,8 @@ jobs:
           tar -xzf tinygo.tar.gz -C tinygo_temp
 
           # Call sync script
-          chmod +x scripts/sync-module.sh
-          ./scripts/sync-module.sh \
+          chmod +x .github/workflows/scripts/sync-module.sh
+          .github/workflows/scripts/sync-module.sh \
             "${{ matrix.module }}" \
             "$VERSION" \
             "tinygo_temp/tinygo/src/${{ matrix.module }}" \
