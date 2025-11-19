@@ -32,12 +32,12 @@ jobs:
 
       - name: Get latest TinyGo version
         id: get-latest
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          # Fetch releases from TinyGo
-          RELEASES=$(curl -s https://api.github.com/repos/tinygo-org/tinygo/releases)
-
-          # Filter to get latest stable version (vX.Y.Z format, exclude pre-releases)
-          LATEST_VERSION=$(echo "$RELEASES" | jq -r '[.[] | select(.prerelease == false) | select(.tag_name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$"))] | .[0].tag_name')
+          # Fetch releases using gh cli (handles authentication automatically)
+          LATEST_VERSION=$(gh api repos/tinygo-org/tinygo/releases \
+            --jq '[.[] | select(.prerelease == false) | select(.tag_name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$"))] | .[0].tag_name')
 
           if [ -z "$LATEST_VERSION" ] || [ "$LATEST_VERSION" = "null" ]; then
             echo "Failed to get latest version"
