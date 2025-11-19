@@ -27,8 +27,8 @@ jobs:
 
       - name: Fetch all branches
         run: |
-          git fetch origin device:device || true
-          git fetch origin machine:machine || true
+          git fetch origin device:device
+          git fetch origin machine:machine
 
       - name: Get latest TinyGo version
         id: get-latest
@@ -51,14 +51,10 @@ jobs:
         id: get-current
         run: |
           # Switch to module branch
-          git checkout ${{ matrix.module }} || {
-            echo "Branch ${{ matrix.module }} does not exist"
-            echo "current_version=" >> $GITHUB_OUTPUT
-            exit 0
-          }
+          git checkout ${{ matrix.module }}
 
           # Find latest [SYNC] commit
-          SYNC_COMMIT=$(git log --all --grep="^\[SYNC\] Sync ${{ matrix.module }} from TinyGo" --format="%H" -n 1 || true)
+          SYNC_COMMIT=$(git log --all --grep="^\[SYNC\] Sync ${{ matrix.module }} from TinyGo" --format="%H" -n 1)
 
           if [ -z "$SYNC_COMMIT" ]; then
             echo "No [SYNC] commit found, treating as initial state"
@@ -66,7 +62,7 @@ jobs:
           else
             # Extract version from commit message
             COMMIT_MSG=$(git log -1 --format=%s $SYNC_COMMIT)
-            CURRENT_VERSION=$(echo "$COMMIT_MSG" | grep -oP 'v\d+\.\d+\.\d+' || true)
+            CURRENT_VERSION=$(echo "$COMMIT_MSG" | grep -oP 'v\d+\.\d+\.\d+')
 
             if [ -z "$CURRENT_VERSION" ]; then
               echo "Could not extract version from commit: $COMMIT_MSG"
@@ -144,10 +140,10 @@ jobs:
         if: steps.compare.outputs.needs_sync == 'true'
         run: |
           # Compare TinyGo source with committed directory
-          diff -r "tinygo_temp/tinygo/src/${{ matrix.module }}" "${{ matrix.module }}/" || {
+          if ! diff -r "tinygo_temp/tinygo/src/${{ matrix.module }}" "${{ matrix.module }}/"; then
             echo "Verification failed: directories differ"
             exit 1
-          }
+          fi
           echo "✅ Verification passed: directories match"
 
       - name: Create Pull Request
