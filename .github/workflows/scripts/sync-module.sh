@@ -32,23 +32,18 @@ if [ ! -d "$SOURCE_DIR" ]; then
 fi
 
 # Create target directory if it doesn't exist
-mkdir -p "$(dirname "$TARGET_DIR")"
+mkdir -p "$TARGET_DIR"
 
-# Fully replace directory content
-echo "Replacing directory content..."
+# Sync directory content using rsync
+echo "Syncing directory content with rsync..."
 
-# Step 1: Copy source to temporary location
-TEMP_DIR="${TARGET_DIR}.tmp"
-rm -rf "$TEMP_DIR"
-cp -r "$SOURCE_DIR" "$TEMP_DIR"
+# Use rsync to fully sync directories
+# -a: archive mode (preserves permissions, timestamps, etc.)
+# -v: verbose output
+# --delete: delete files in dest that don't exist in source
+rsync -av --delete "$SOURCE_DIR/" "$TARGET_DIR/"
 
-# Step 2: Delete original target directory
-rm -rf "$TARGET_DIR"
-
-# Step 3: Rename temporary directory to target
-mv "$TEMP_DIR" "$TARGET_DIR"
-
-echo "✅ Directory replacement completed"
+echo "✅ Directory sync completed"
 
 # Commit changes
 echo "Committing changes..."
