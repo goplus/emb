@@ -38,7 +38,7 @@ curl -L -o tinygo.tar.gz "$DOWNLOAD_URL"
 # Extract to temporary directory
 echo "Extracting archive to $TEMP_DIR..."
 mkdir -p "$TEMP_DIR"
-tar -xzf tinygo.tar.gz -C "$TEMP_DIR"
+tar -xzf tinygo.tar.gz -C "$TEMP_DIR" --strip-components=1
 
 # Full path to source in extracted archive
 FULL_SOURCE_PATH="${TEMP_DIR}/${SOURCE_DIR}"
@@ -61,20 +61,6 @@ echo "Syncing directory content with rsync..."
 # --delete: delete files in dest that don't exist in source
 rsync -av --delete "$FULL_SOURCE_PATH/" "$TARGET_DIR/"
 
-echo "✅ Directory sync completed"
-
-# Commit changes
-echo "Committing changes..."
-git add "$TARGET_DIR"
-
-# Check if there are changes to commit
-if git diff --staged --quiet; then
-    echo "No changes to commit"
-else
-    git commit -m "[SYNC] Sync ${MODULE} from TinyGo ${VERSION}"
-    echo "✅ Changes committed"
-fi
-
 echo "========================================="
-echo "Sync completed successfully"
+echo "✅ Sync completed successfully"
 echo "========================================="

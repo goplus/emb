@@ -139,6 +139,26 @@ jobs:
           fi
           echo "✅ Verification passed: directories match"
 
+      - name: Commit changes
+        if: steps.compare.outputs.needs_sync == 'true'
+        run: |
+          VERSION="${{ steps.get-latest.outputs.latest_version }}"
+
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Stage changes
+          git add "${{ matrix.module }}/"
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "[SYNC] Sync ${{ matrix.module }} from TinyGo ${VERSION}"
+            echo "✅ Changes committed"
+          fi
+
       - name: Create Pull Request
         if: steps.compare.outputs.needs_sync == 'true'
         env:
@@ -147,10 +167,6 @@ jobs:
           VERSION="${{ steps.get-latest.outputs.latest_version }}"
           TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
           BRANCH_NAME="sync-${{ matrix.module }}-${VERSION}-${TIMESTAMP}"
-
-          # Configure git
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Create and push branch
           git checkout -b "$BRANCH_NAME"
