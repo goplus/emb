@@ -144,11 +144,13 @@ jobs:
 
           # Check if there are changes to commit
           if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "[SYNC] Sync ${{ matrix.module }} from TinyGo ${VERSION}"
-            echo "✅ Changes committed"
+            echo "No changes to commit, exiting"
+            exit 0
           fi
+
+          # Commit changes
+          git commit -m "[SYNC] Sync ${{ matrix.module }} from TinyGo ${VERSION}"
+          echo "✅ Changes committed"
 
       - name: Create Pull Request
         if: steps.compare.outputs.needs_sync == 'true'
