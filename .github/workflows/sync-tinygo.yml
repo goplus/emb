@@ -1,0 +1,175 @@
+name: Sync TinyGo Updates
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Daily at UTC 2:00
+  workflow_dispatch:      # Allow manual trigger
+
+jobs:
+  sync:
+    strategy:
+      matrix:
+        module: [device, machine]
+      fail-fast: false  # Don't stop other modules if one fails
+
+    name: Sync ${{ matrix.module }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches
+
+      - name: Fetch all branches
+        run: |
+          git fetch origin device:device
+          git fetch origin machine:machine
+
+      - name: Prepare sync script
+        run: |
+          # Copy script to temp location before switching branches
+          cp .github/workflows/scripts/sync-module.sh /tmp/sync-module.sh
+          chmod +x /tmp/sync-module.sh
+
+      - name: Get latest TinyGo version
+        id: get-latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Fetch releases using gh cli (handles authentication automatically)
+          LATEST_VERSION=$(gh api repos/tinygo-org/tinygo/releases \
+            --jq '[.[] | select(.prerelease == false) | select(.tag_name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$"))] | .[0].tag_name')
+
+          if [ -z "$LATEST_VERSION" ] || [ "$LATEST_VERSION" = "null" ]; then
+            echo "Failed to get latest version"
+            exit 1
+          fi
+
+          echo "latest_version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          echo "Latest TinyGo version: $LATEST_VERSION"
+
+      - name: Get current ${{ matrix.module }} version
+        id: get-current
+        run: |
+          # Switch to module branch
+          git checkout ${{ matrix.module }}
+
+          # Find latest [SYNC] commit on current branch only
+          SYNC_COMMIT=$(git log --grep="^\[SYNC\] Sync ${{ matrix.module }} from TinyGo" --format="%H" -n 1)
+
+          if [ -z "$SYNC_COMMIT" ]; then
+            echo "No [SYNC] commit found, treating as initial state"
+            echo "current_version=" >> $GITHUB_OUTPUT
+          else
+            # Extract version from commit message
+            COMMIT_MSG=$(git log -1 --format=%s $SYNC_COMMIT)
+            CURRENT_VERSION=$(echo "$COMMIT_MSG" | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+')
+
+            if [ -z "$CURRENT_VERSION" ]; then
+              echo "Could not extract version from commit: $COMMIT_MSG"
+              echo "current_version=" >> $GITHUB_OUTPUT
+            else
+              echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+              echo "Current ${{ matrix.module }} version: $CURRENT_VERSION"
+            fi
+          fi
+
+      - name: Compare versions
+        id: compare
+        run: |
+          LATEST="${{ steps.get-latest.outputs.latest_version }}"
+          CURRENT="${{ steps.get-current.outputs.current_version }}"
+
+          # If current is empty, need sync
+          if [ -z "$CURRENT" ]; then
+            echo "needs_sync=true" >> $GITHUB_OUTPUT
+            echo "Need sync: initial state"
+            exit 0
+          fi
+
+          # Compare versions using sort -V
+          # If LATEST is the highest version after sorting, and not equal to CURRENT, we need sync
+          MAX_VERSION=$(echo -e "$CURRENT\n$LATEST" | sort -V | tail -1)
+
+          if [ "$MAX_VERSION" = "$LATEST" ] && [ "$CURRENT" != "$LATEST" ]; then
+            echo "needs_sync=true" >> $GITHUB_OUTPUT
+            echo "Need sync: $CURRENT -> $LATEST"
+          else
+            echo "needs_sync=false" >> $GITHUB_OUTPUT
+            echo "No sync needed: current ($CURRENT) >= latest ($LATEST)"
+          fi
+
+      - name: Download and sync
+        if: steps.compare.outputs.needs_sync == 'true'
+        run: |
+          VERSION="${{ steps.get-latest.outputs.latest_version }}"
+          TEMP_DIR="tinygo_temp"
+
+          # Call sync script from temp location (already on module branch)
+          /tmp/sync-module.sh \
+            "${{ matrix.module }}" \
+            "$VERSION" \
+            "$TEMP_DIR" \
+            "src/${{ matrix.module }}" \
+            "${{ matrix.module }}/"
+
+      - name: Verify sync
+        if: steps.compare.outputs.needs_sync == 'true'
+        run: |
+          TEMP_DIR="tinygo_temp"
+
+          # Compare TinyGo source with committed directory
+          if ! diff -r "$TEMP_DIR/src/${{ matrix.module }}" "${{ matrix.module }}/"; then
+            echo "Verification failed: directories differ"
+            exit 1
+          fi
+          echo "✅ Verification passed: directories match"
+
+      - name: Commit changes
+        if: steps.compare.outputs.needs_sync == 'true'
+        run: |
+          VERSION="${{ steps.get-latest.outputs.latest_version }}"
+
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Stage changes
+          git add "${{ matrix.module }}/"
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit, exiting"
+            exit 0
+          fi
+
+          # Commit changes
+          git commit -m "[SYNC] Sync ${{ matrix.module }} from TinyGo ${VERSION}"
+          echo "✅ Changes committed"
+
+      - name: Create Pull Request
+        if: steps.compare.outputs.needs_sync == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ steps.get-latest.outputs.latest_version }}"
+          TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
+          BRANCH_NAME="sync-${{ matrix.module }}-${VERSION}-${TIMESTAMP}"
+
+          # Create and push branch
+          git checkout -b "$BRANCH_NAME"
+          git push origin "$BRANCH_NAME"
+
+          # Create PR
+          PR_BODY="Sync ${{ matrix.module }} from TinyGo [${VERSION}](https://github.com/tinygo-org/tinygo/releases/tag/${VERSION})"
+
+          gh pr create \
+            --base "${{ matrix.module }}" \
+            --head "$BRANCH_NAME" \
+            --title "[SYNC] Sync ${{ matrix.module }} from TinyGo ${VERSION}" \
+            --body "$PR_BODY"
