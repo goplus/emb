@@ -21,7 +21,8 @@ DEVICE_VALIDATION_TARGETS=(
     "device/arm64:esp32"
 
     # avr
-    "device/avr:arduino,arduino-leonardo,atmega1284p,atmega328pb,attiny1616,simavr"
+    # NOTE: arduino target current cannot directly import device/avr due to duplicate symbol errors
+    # "device/avr:arduino-leonardo,atmega1284p,atmega328pb,attiny1616,simavr"
 
     # esp
     "device/esp:esp32,esp8266"
