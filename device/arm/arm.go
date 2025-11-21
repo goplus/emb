@@ -29,11 +29,18 @@
 //	POSSIBILITY OF SUCH DAMAGE.
 package arm
 
-import "C"
+// NOTE(zzy): import "C" is not needed here and causes compilation errors.
+// The .c and .S files are already stored in LLGO at /llgo/targets/device/,
+// including import "C" will cause undefined symbol errors like:
+// - undefined: SCS_BASE
+// - undefined: Asm
+// when building with: llgo build -target cortex-m-qemu .
+
 import (
 	"errors"
-	"github.com/goplus/emb/runtime/volatile"
 	"unsafe"
+
+	"github.com/goplus/emb/runtime/volatile"
 )
 
 var errCycleCountTooLarge = errors.New("requested cycle count is too large, overflows 24 bit counter")
