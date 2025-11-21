@@ -209,14 +209,17 @@ func SetPriority(irq uint32, priority uint32) {
 
 // DisableInterrupts disables all interrupts, and returns the old interrupt
 // state.
+// DisableInterrupts/EnableInterrupts functions available in LLGO
+// Implementation location: llgo/targets/device/arm/interrupts.c
+// NOTE(zzy): Available for future linkage via //go:linkname
 //
-//export DisableInterrupts
+//go:linkname DisableInterrupts DisableInterrupts
 func DisableInterrupts() uintptr
 
 // EnableInterrupts enables all interrupts again. The value passed in must be
 // the mask returned by DisableInterrupts.
 //
-//export EnableInterrupts
+//go:linkname EnableInterrupts EnableInterrupts
 func EnableInterrupts(mask uintptr)
 
 // Set up the system timer to generate periodic tick events.
