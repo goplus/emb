@@ -38,7 +38,7 @@ jobs:
       - name: Setup LLGO
         uses: ./.github/actions/setup-llgo
         with:
-          commit-hash: 2d80951e7d8f5823c1fa92c8a7cb5dd351a10e6a
+          commit-hash: b25ae1b4e7c06a302d1d09eb9e9b0ad1e3a43abd
       - name: Run Machine Package Validation
         run: |
           ./.github/scripts/validate_embed_packages.sh machine
