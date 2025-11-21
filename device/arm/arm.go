@@ -59,7 +59,7 @@ func Asm(asm string) {}
 // You can use {} in the asm string (which expands to a register) to set the
 // return value.
 //
-//llgo:link AsmFull llgo.asmfull
+//llgo:link AsmFull llgo.asm
 func AsmFull(asm string, regs map[string]interface{}) uintptr { return 0 }
 
 // Run the following system call (SVCall) with 0 arguments.
