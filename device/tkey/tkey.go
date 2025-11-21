@@ -5,7 +5,7 @@
 package tkey
 
 import (
-	"runtime/volatile"
+	"github.com/goplus/emb/runtime/volatile"
 	"unsafe"
 )
 

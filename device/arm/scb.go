@@ -6,7 +6,7 @@
 package arm
 
 import (
-	"runtime/volatile"
+	"github.com/goplus/emb/runtime/volatile"
 	"unsafe"
 )
 
