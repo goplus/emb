@@ -1,11 +1,11 @@
 package msc
 
 import (
-	"machine"
-	"machine/usb"
-	"machine/usb/descriptor"
-	"machine/usb/msc/csw"
-	"machine/usb/msc/scsi"
+	"github.com/goplus/emb/machine"
+	"github.com/goplus/emb/machine/_usb"
+	"github.com/goplus/emb/machine/_usb/descriptor"
+	"github.com/goplus/emb/machine/_usb/msc/csw"
+	"github.com/goplus/emb/machine/_usb/msc/scsi"
 	"time"
 )
 

@@ -2,9 +2,9 @@ package cdc
 
 import (
 	"errors"
-	"machine"
-	"machine/usb"
-	"runtime/interrupt"
+	"github.com/goplus/emb/machine"
+	"github.com/goplus/emb/machine/_usb"
+	"github.com/goplus/emb/runtime/interrupt"
 )
 
 var (

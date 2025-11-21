@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"device/arm"
-	"device/nrf"
+	"github.com/goplus/emb/device/arm"
+	"github.com/goplus/emb/device/nrf"
 
 	"errors"
 )

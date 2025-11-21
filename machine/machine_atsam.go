@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"runtime/volatile"
+	"github.com/goplus/emb/runtime/volatile"
 	"unsafe"
 )
 

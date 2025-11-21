@@ -3,10 +3,10 @@
 package machine
 
 import (
-	"device/gba"
+	"github.com/goplus/emb/device/gba"
 
 	"image/color"
-	"runtime/volatile"
+	"github.com/goplus/emb/runtime/volatile"
 	"unsafe"
 )
 

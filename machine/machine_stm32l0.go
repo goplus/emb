@@ -5,8 +5,8 @@ package machine
 // Peripheral abstraction layer for the stm32l0
 
 import (
-	"device/stm32"
-	"runtime/interrupt"
+	"github.com/goplus/emb/device/stm32"
+	"github.com/goplus/emb/runtime/interrupt"
 )
 
 func CPUFrequency() uint32 {

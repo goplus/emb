@@ -3,9 +3,9 @@
 package machine
 
 import (
-	"device/sam"
+	"github.com/goplus/emb/device/sam"
 	"errors"
-	"runtime/interrupt"
+	"github.com/goplus/emb/runtime/interrupt"
 	"unsafe"
 )
 

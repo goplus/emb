@@ -2,7 +2,7 @@
 
 package machine
 
-import "device/kendryte"
+import "github.com/goplus/emb/device/kendryte"
 
 // SPI on the MAix Bit.
 var (

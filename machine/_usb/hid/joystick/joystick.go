@@ -1,10 +1,10 @@
 package joystick
 
 import (
-	"machine"
-	"machine/usb"
-	"machine/usb/descriptor"
-	"machine/usb/hid"
+	"github.com/goplus/emb/machine"
+	"github.com/goplus/emb/machine/_usb"
+	"github.com/goplus/emb/machine/_usb/descriptor"
+	"github.com/goplus/emb/machine/_usb/hid"
 )
 
 var Joystick *joystick

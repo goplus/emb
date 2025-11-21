@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"device/avr"
-	"runtime/volatile"
+	"github.com/goplus/emb/device/avr"
+	"github.com/goplus/emb/runtime/volatile"
 	"unsafe"
 )
 

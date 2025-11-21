@@ -3,9 +3,9 @@
 package machine
 
 import (
-	"device/esp"
+	"github.com/goplus/emb/device/esp"
 	"errors"
-	"runtime/volatile"
+	"github.com/goplus/emb/runtime/volatile"
 	"unsafe"
 )
 

@@ -6,9 +6,9 @@
 package machine
 
 import (
-	"device/rp"
+	"github.com/goplus/emb/device/rp"
 	"errors"
-	"runtime/interrupt"
+	"github.com/goplus/emb/runtime/interrupt"
 	"unsafe"
 )
 

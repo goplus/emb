@@ -6,8 +6,8 @@
 package machine
 
 import (
-	"device/stm32"
-	"runtime/interrupt"
+	"github.com/goplus/emb/device/stm32"
+	"github.com/goplus/emb/runtime/interrupt"
 )
 
 const (

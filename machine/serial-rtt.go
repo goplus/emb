@@ -10,8 +10,8 @@
 package machine
 
 import (
-	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/emb/runtime/interrupt"
+	"github.com/goplus/emb/runtime/volatile"
 	"unsafe"
 )
 

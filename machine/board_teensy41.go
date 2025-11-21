@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"device/nxp"
-	"runtime/interrupt"
+	"github.com/goplus/emb/device/nxp"
+	"github.com/goplus/emb/runtime/interrupt"
 )
 
 // Digital pins

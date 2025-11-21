@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/rp"
+	"github.com/goplus/emb/device/rp"
 )
 
 // Watchdog provides access to the hardware watchdog available
