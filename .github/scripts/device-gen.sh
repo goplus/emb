@@ -13,7 +13,7 @@ declare_avr_config() {
         "lib/avr/packs/tiny"
     )
     ignore_list="avr.go avr_tiny85.go"
-    target="emb/device/avr"
+    target="device/avr"
     generator="gen-device-avr"
 }
 
@@ -27,7 +27,7 @@ declare_esp_config() {
         "-source=https://github.com/posborne/cmsis-svd/tree/master/data/Espressif -interrupts=software lib/cmsis-svd/data/Espressif/"
     )
     ignore_list=""
-    target="emb/device/esp"
+    target="device/esp"
     generator="gen-device-svd"
 }
 
@@ -40,7 +40,7 @@ declare_nrf_config() {
         "-source=https://github.com/NordicSemiconductor/nrfx/tree/master/mdk lib/nrfx/mdk/"
     )
     ignore_list="README.markdown"
-    target="emb/device/nrf"
+    target="device/nrf"
     generator="gen-device-svd"
 }
 
@@ -53,7 +53,7 @@ declare_nxp_config() {
         "-source=https://github.com/posborne/cmsis-svd/tree/master/data/NXP lib/cmsis-svd/data/NXP/"
     )
     ignore_list="hardfault.go mimxrt1062_clock.go mimxrt1062_hardfault.go mimxrt1062_mpu.go"
-    target="emb/device/nxp"
+    target="device/nxp"
     generator="gen-device-svd"
 }
 
@@ -66,7 +66,7 @@ declare_sam_config() {
         "-source=https://github.com/posborne/cmsis-svd/tree/master/data/Atmel lib/cmsis-svd/data/Atmel/"
     )
     ignore_list="atsamd51x-bitfields.go atsame5x-bitfields.go"
-    target="emb/device/sam"
+    target="device/sam"
     generator="gen-device-svd"
 }
 
@@ -79,7 +79,7 @@ declare_sifive_config() {
         "-source=https://github.com/posborne/cmsis-svd/tree/master/data/SiFive-Community -interrupts=software lib/cmsis-svd/data/SiFive-Community/"
     )
     ignore_list=""
-    target="emb/device/sifive"
+    target="device/sifive"
     generator="gen-device-svd"
 }
 
@@ -92,7 +92,7 @@ declare_kendryte_config() {
         "-source=https://github.com/posborne/cmsis-svd/tree/master/data/Kendryte-Community -interrupts=software lib/cmsis-svd/data/Kendryte-Community/"
     )
     ignore_list=""
-    target="emb/device/kendryte"
+    target="device/kendryte"
     generator="gen-device-svd"
 }
 
@@ -105,7 +105,7 @@ declare_stm32_config() {
         "-source=https://github.com/tinygo-org/stm32-svd lib/stm32-svd/svd"
     )
     ignore_list=""
-    target="emb/device/stm32"
+    target="device/stm32"
     generator="gen-device-svd"
 }
 
@@ -118,7 +118,7 @@ declare_rp_config() {
         "-source=https://github.com/posborne/cmsis-svd/tree/master/data/RaspberryPi lib/cmsis-svd/data/RaspberryPi/"
     )
     ignore_list="rp2040-extra.go rp2350-extra.go"
-    target="emb/device/rp"
+    target="device/rp"
     generator="gen-device-svd"
 }
 
@@ -131,7 +131,7 @@ declare_renesas_config() {
         "-source=https://github.com/cmsis-svd/cmsis-svd-data/tree/master/data/Renesas lib/cmsis-svd/data/Renesas/"
     )
     ignore_list=""
-    target="emb/device/renesas"
+    target="device/renesas"
     generator="gen-device-svd"
 }
 
