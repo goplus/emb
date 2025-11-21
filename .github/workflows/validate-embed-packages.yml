@@ -22,7 +22,7 @@ jobs:
       - name: Setup LLGO
         uses: ./.github/actions/setup-llgo
         with:
-          commit-hash: c4223df0877e2a85d361cdcc73076cdcf312a3b0
+          commit-hash: 2d80951e7d8f5823c1fa92c8a7cb5dd351a10e6a
       - name: Run Device Package Validation
         run: |
           ./.github/scripts/validate_embed_packages.sh device
