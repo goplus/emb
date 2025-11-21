@@ -3,9 +3,9 @@
 package machine
 
 import (
-	"device/rp"
-	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/emb/device/rp"
+	"github.com/goplus/emb/runtime/interrupt"
+	"github.com/goplus/emb/runtime/volatile"
 	"unsafe"
 )
 

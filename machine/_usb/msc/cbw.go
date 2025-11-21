@@ -2,8 +2,8 @@ package msc
 
 import (
 	"encoding/binary"
-	"machine/usb/msc/csw"
-	"machine/usb/msc/scsi"
+	"github.com/goplus/emb/machine/_usb/msc/csw"
+	"github.com/goplus/emb/machine/_usb/msc/scsi"
 )
 
 const (

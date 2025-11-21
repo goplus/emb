@@ -1,9 +1,9 @@
 package msc
 
 import (
-	"machine"
-	"machine/usb"
-	"machine/usb/msc/csw"
+	"github.com/goplus/emb/machine"
+	"github.com/goplus/emb/machine/_usb"
+	"github.com/goplus/emb/machine/_usb/msc/csw"
 )
 
 func setupPacketHandler(setup usb.Setup) bool {

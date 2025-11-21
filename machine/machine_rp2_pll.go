@@ -3,11 +3,11 @@
 package machine
 
 import (
-	"device/rp"
+	"github.com/goplus/emb/device/rp"
 	"errors"
 	"math"
 	"math/bits"
-	"runtime/volatile"
+	"github.com/goplus/emb/runtime/volatile"
 	"unsafe"
 )
 

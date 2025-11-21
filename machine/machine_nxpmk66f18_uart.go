@@ -32,11 +32,11 @@
 package machine
 
 import (
-	"device/arm"
-	"device/nxp"
+	"github.com/goplus/emb/device/arm"
+	"github.com/goplus/emb/device/nxp"
 	"errors"
-	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/emb/runtime/interrupt"
+	"github.com/goplus/emb/runtime/volatile"
 
 	_ "unsafe" // for go:linkname
 )

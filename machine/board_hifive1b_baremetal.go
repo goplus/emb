@@ -2,7 +2,7 @@
 
 package machine
 
-import "device/sifive"
+import "github.com/goplus/emb/device/sifive"
 
 // SPI on the HiFive1.
 var (

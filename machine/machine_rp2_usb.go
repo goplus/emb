@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"machine/usb"
-	"runtime/volatile"
+	"github.com/goplus/emb/machine/_usb"
+	"github.com/goplus/emb/runtime/volatile"
 	"unsafe"
 )
 
