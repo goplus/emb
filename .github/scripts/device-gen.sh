@@ -258,33 +258,39 @@ generate_devices() {
     fi
 
     # Clean target directory if in generation mode
-    if [ "$mode" = "generate" ] && [ -n "$ignore_list" ]; then
-        echo "[$name] Cleaning $target_dir (preserving ignore list: $ignore_list)"
+    if [ "$mode" = "generate" ]; then
+        echo "[$name] Cleaning $target_dir"
 
-        # Create temp directory to store ignored files
-        TEMP_DIR=$(mktemp -d)
+        # Backup ignored files if ignore_list is not empty
+        if [ -n "$ignore_list" ]; then
+            echo "[$name] Preserving ignore list: $ignore_list"
+            # Create temp directory to store ignored files
+            TEMP_DIR=$(mktemp -d)
 
-        # Backup ignored files if they exist
-        for file in $ignore_list; do
-            if [ -f "$target_dir/$file" ]; then
-                cp "$target_dir/$file" "$TEMP_DIR/"
-                echo "[$name] Backed up: $file"
-            fi
-        done
+            # Backup ignored files if they exist
+            for file in $ignore_list; do
+                if [ -f "$target_dir/$file" ]; then
+                    cp "$target_dir/$file" "$TEMP_DIR/"
+                    echo "[$name] Backed up: $file"
+                fi
+            done
+        fi
 
         # Remove all files from target directory
         rm -rf "$target_dir"/*
 
-        # Restore ignored files
-        for file in $ignore_list; do
-            if [ -f "$TEMP_DIR/$file" ]; then
-                cp "$TEMP_DIR/$file" "$target_dir/"
-                echo "[$name] Restored: $file"
-            fi
-        done
+        # Restore ignored files if ignore_list is not empty
+        if [ -n "$ignore_list" ]; then
+            for file in $ignore_list; do
+                if [ -f "$TEMP_DIR/$file" ]; then
+                    cp "$TEMP_DIR/$file" "$target_dir/"
+                    echo "[$name] Restored: $file"
+                fi
+            done
 
-        # Clean up temp directory
-        rm -rf "$TEMP_DIR"
+            # Clean up temp directory
+            rm -rf "$TEMP_DIR"
+        fi
     fi
 
     # Generate device files from all tasks
