@@ -175,13 +175,9 @@ MACHINE_VALIDATION_TARGETS=(
     # 2 errors generated.
     # panic: export object of internal/abi failed: exit status 1
 
-    # "esp32-mini32"
-    # ld.lld: error: section 'text' will not fit in region 'iram_seg': overflowed by 13157 bytes
-    # binaray too large https://github.com/goplus/llgo/issues/1317
+    "esp32-mini32"
 
-    # "esp32c3-supermini"
-    # ld.lld: error: region DRAM overflowed by .data and .bss sections
-
+    "esp32c3-supermini"
 
     # "nodemcu"
     # compile picolibcnewlib/libc/tinystdio/puts.c fail
