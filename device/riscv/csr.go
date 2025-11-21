@@ -8,17 +8,32 @@ package riscv
 type CSR int16
 
 // Get returns the value of the given CSR.
-func (csr CSR) Get() uintptr
+func (csr CSR) Get() uintptr {
+	// TODO(zzy): implement tinygo/compiler/inlineasm.go emitCSROperation
+	panic("TODO: CSR.Get()")
+	return 0
+}
 
 // Set stores a new value in the given CSR.
-func (csr CSR) Set(uintptr)
+func (csr CSR) Set(uintptr) {
+	// TODO(zzy): implement tinygo/compiler/inlineasm.go emitCSROperation
+	panic("TODO: CSR.Set()")
+}
 
 // SetBits atomically sets the given bits in this ISR and returns the old value.
-func (csr CSR) SetBits(uintptr) uintptr
+func (csr CSR) SetBits(uintptr) uintptr {
+	// TODO(zzy): implement tinygo/compiler/inlineasm.go emitCSROperation
+	panic("TODO: CSR.SetBits()")
+	return 0
+}
 
 // ClearBits atomically clears the given bits in this ISR and returns the old
 // value.
-func (csr CSR) ClearBits(uintptr) uintptr
+func (csr CSR) ClearBits(uintptr) uintptr {
+	// TODO(zzy): implement tinygo/compiler/inlineasm.go emitCSROperation
+	panic("TODO: CSR.ClearBits()")
+	return 0
+}
 
 // CSR values defined in the RISC-V privileged specification. Not all values may
 // be available on any given chip.
