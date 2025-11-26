@@ -1,7 +1,7 @@
 package descriptor
 
 import (
-	"internal/binary"
+	"github.com/goplus/emb/internal/binary"
 )
 
 /* Endpoint Descriptor
