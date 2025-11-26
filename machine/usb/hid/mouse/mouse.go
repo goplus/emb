@@ -2,7 +2,7 @@ package mouse
 
 import (
 	"github.com/goplus/emb/machine"
-	"github.com/goplus/emb/machine/_usb/hid"
+	"github.com/goplus/emb/machine/usb/hid"
 )
 
 var Mouse *mouse
