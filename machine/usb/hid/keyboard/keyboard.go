@@ -2,8 +2,9 @@ package keyboard
 
 import (
 	"errors"
+
 	"github.com/goplus/emb/machine"
-	"github.com/goplus/emb/machine/_usb/hid"
+	"github.com/goplus/emb/machine/usb/hid"
 )
 
 // from usb-hid-keyboard.go

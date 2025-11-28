@@ -2,9 +2,10 @@ package hid
 
 import (
 	"errors"
+
 	"github.com/goplus/emb/machine"
-	"github.com/goplus/emb/machine/_usb"
-	"github.com/goplus/emb/machine/_usb/descriptor"
+	"github.com/goplus/emb/machine/usb"
+	"github.com/goplus/emb/machine/usb/descriptor"
 )
 
 // from usb-hid.go

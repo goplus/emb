@@ -3,10 +3,11 @@
 package machine
 
 import (
-	"github.com/goplus/emb/device/sam"
-	"github.com/goplus/emb/machine/_usb"
-	"github.com/goplus/emb/runtime/interrupt"
 	"unsafe"
+
+	"github.com/goplus/emb/device/sam"
+	"github.com/goplus/emb/machine/usb"
+	"github.com/goplus/emb/runtime/interrupt"
 )
 
 const (

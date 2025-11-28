@@ -4,7 +4,7 @@ package machine
 
 import (
 	"github.com/goplus/emb/device/rp"
-	"github.com/goplus/emb/machine/_usb"
+	"github.com/goplus/emb/machine/usb"
 	"github.com/goplus/emb/runtime/interrupt"
 )
 

@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"github.com/goplus/emb/machine/_usb"
-	"github.com/goplus/emb/machine/_usb/descriptor"
+	"github.com/goplus/emb/machine/usb"
+	"github.com/goplus/emb/machine/usb/descriptor"
 
 	"errors"
 )

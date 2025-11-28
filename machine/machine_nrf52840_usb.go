@@ -3,12 +3,13 @@
 package machine
 
 import (
+	"unsafe"
+
 	"github.com/goplus/emb/device/arm"
 	"github.com/goplus/emb/device/nrf"
-	"github.com/goplus/emb/machine/_usb"
+	"github.com/goplus/emb/machine/usb"
 	"github.com/goplus/emb/runtime/interrupt"
 	"github.com/goplus/emb/runtime/volatile"
-	"unsafe"
 )
 
 const NumberOfUSBEndpoints = 8
