@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/nrf"
+	"github.com/goplus/emb/device/nrf"
 )
 
 const eraseBlockSizeValue = 1024

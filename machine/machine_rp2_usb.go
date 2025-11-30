@@ -3,9 +3,10 @@
 package machine
 
 import (
-	"machine/usb"
-	"runtime/volatile"
 	"unsafe"
+
+	"github.com/goplus/emb/machine/usb"
+	"github.com/goplus/emb/runtime/volatile"
 )
 
 const NumberOfUSBEndpoints = 8

@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/avr"
+	"github.com/goplus/emb/device/avr"
 )
 
 const (

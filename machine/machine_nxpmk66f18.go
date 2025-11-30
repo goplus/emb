@@ -32,8 +32,8 @@
 package machine
 
 import (
-	"device/nxp"
-	"runtime/volatile"
+	"github.com/goplus/emb/device/nxp"
+	"github.com/goplus/emb/runtime/volatile"
 	"unsafe"
 )
 

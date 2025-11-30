@@ -2,6 +2,7 @@ package hid
 
 import (
 	"errors"
+
 	"github.com/goplus/emb/machine"
 	"github.com/goplus/emb/machine/usb"
 	"github.com/goplus/emb/machine/usb/descriptor"

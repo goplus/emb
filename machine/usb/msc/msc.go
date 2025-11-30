@@ -1,12 +1,13 @@
 package msc
 
 import (
+	"time"
+
 	"github.com/goplus/emb/machine"
 	"github.com/goplus/emb/machine/usb"
 	"github.com/goplus/emb/machine/usb/descriptor"
 	"github.com/goplus/emb/machine/usb/msc/csw"
 	"github.com/goplus/emb/machine/usb/msc/scsi"
-	"time"
 )
 
 type mscState uint8

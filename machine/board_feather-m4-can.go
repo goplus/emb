@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/sam"
+	"github.com/goplus/emb/device/sam"
 )
 
 // used to reset into bootloader

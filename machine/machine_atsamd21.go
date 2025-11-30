@@ -7,11 +7,11 @@
 package machine
 
 import (
-	"device/arm"
-	"device/sam"
+	"github.com/goplus/emb/device/arm"
+	"github.com/goplus/emb/device/sam"
 	"errors"
-	"internal/binary"
-	"runtime/interrupt"
+	"github.com/goplus/emb/internal/binary"
+	"github.com/goplus/emb/runtime/interrupt"
 	"unsafe"
 )
 

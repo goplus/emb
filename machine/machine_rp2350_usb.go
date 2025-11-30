@@ -3,9 +3,9 @@
 package machine
 
 import (
-	"device/rp"
-	"machine/usb"
-	"runtime/interrupt"
+	"github.com/goplus/emb/device/rp"
+	"github.com/goplus/emb/machine/usb"
+	"github.com/goplus/emb/runtime/interrupt"
 )
 
 // Configure the USB peripheral. The config is here for compatibility with the UART interface.

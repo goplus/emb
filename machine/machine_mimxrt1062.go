@@ -3,10 +3,10 @@
 package machine
 
 import (
-	"device/nxp"
+	"github.com/goplus/emb/device/nxp"
 	"math/bits"
-	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/emb/runtime/interrupt"
+	"github.com/goplus/emb/runtime/volatile"
 )
 
 // Peripheral abstraction layer for the MIMXRT1062

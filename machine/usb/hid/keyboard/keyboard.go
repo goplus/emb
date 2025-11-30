@@ -2,6 +2,7 @@ package keyboard
 
 import (
 	"errors"
+
 	"github.com/goplus/emb/machine"
 	"github.com/goplus/emb/machine/usb/hid"
 )

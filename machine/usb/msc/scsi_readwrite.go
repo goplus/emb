@@ -2,6 +2,7 @@ package msc
 
 import (
 	"errors"
+
 	"github.com/goplus/emb/machine/usb/msc/csw"
 	"github.com/goplus/emb/machine/usb/msc/scsi"
 )

@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/rp"
+	"github.com/goplus/emb/device/rp"
 	"errors"
 	"sync"
 )
